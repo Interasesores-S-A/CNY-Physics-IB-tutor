@@ -1,5 +1,4 @@
 streamlit
 openai
 numpy
-matplotlib
-ipywidgets
+matplotlib>=3.7
