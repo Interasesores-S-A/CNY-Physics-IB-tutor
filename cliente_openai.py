@@ -1,5 +1,3 @@
-import os
-os.environ["OPENAI_API_KEY"] = "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"
 from openai import OpenAI
 import os
 
