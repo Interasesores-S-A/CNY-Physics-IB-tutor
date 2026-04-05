@@ -21,7 +21,7 @@ with col1:
     st.image("logo-colegio-nueva-york.png", width=200)
 
 with col2:
-    st.image("imagen2.png", width=200)
+    st.image("Imagen2.png", width=200)
 
 tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador", "🧪 Generador"])
 
