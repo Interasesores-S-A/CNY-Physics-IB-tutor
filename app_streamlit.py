@@ -14,10 +14,28 @@ from cliente_openai import preguntar_chatgpt
 st.set_page_config(page_title="Tutor IB Física", layout="wide")
 
 st.title("🚀 Plataforma IB de Física")
+col1, col2 = st.columns([1, 3])
+
+with col1:
+    st.image("logo-colegio-nueva-york.png", width=100)
+
+with col2:
+    st.title("Tutor IB Física")
+    st.write("Colegio Nueva York")
 
 tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador", "🧪 Generador"])
 
-
+st.markdown("""
+<hr>
+<p style='text-align: center; color: gray;'>
+Desarrollado por <b>Jhon Jairo GAlán Rincón</b> 🚀
+</p>
+""", unsafe_allow_html=True)st.markdown("""
+<hr>
+<p style='text-align: center; color: gray;'>
+Desarrollado por <b>Tu Nombre o Empresa</b> 🚀
+</p>
+""", unsafe_allow_html=True)
 # =========================
 # 🧠 TUTOR
 # =========================
