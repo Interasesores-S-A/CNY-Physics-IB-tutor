@@ -113,7 +113,7 @@ with tabs[1]:
 # =========================
 with tabs[2]:
 
- st.header("🎛️ Simulación animada MUA")
+    st.header("🎛️ Simulación animada MUA")
 
     u = st.slider("Velocidad inicial (u)", -10.0, 20.0, 0.0)
     a = st.slider("Aceleración (a)", -10.0, 10.0, 1.0)
