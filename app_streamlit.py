@@ -14,12 +14,14 @@ from cliente_openai import preguntar_chatgpt
 st.set_page_config(page_title="Tutor IB Física", layout="wide")
 
 st.title("🚀 Plataforma IB de Física")
+
 col1, col2 = st.columns([1, 3])
 
 with col1:
-st.image("logo-colegio-nueva-york.png", width=400)
+    st.image("logo-colegio-nueva-york.png", width=200)
+
 with col2:
-st.image("imagen2.png", width=400)
+    st.image("imagen2.png", width=400)
 
 tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador", "🧪 Generador"])
 
