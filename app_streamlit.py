@@ -590,3 +590,35 @@ with tabs[8]:
         st.warning("Nivel IB: Básico ⚠️")
     else:
         st.error("Nivel IB: Bajo ❌")
+        st.markdown("---")
+st.subheader("🧠 Retroalimentación automática")
+
+if st.button("Generar retroalimentación con IA"):
+
+    with st.spinner("Analizando tu investigación..."):
+
+        prompt = f"""
+Eres un profesor experto del Bachillerato Internacional (IB) en Física.
+
+Un estudiante ha realizado una autoevaluación de su Investigación Interna con los siguientes resultados:
+
+Diseño: {A_level}/6
+Análisis de datos: {B_level}/6
+Conclusiones: {C_level}/6
+Evaluación: {D_level}/6
+
+Genera una retroalimentación estructurada que incluya:
+
+1. Fortalezas del trabajo
+2. Debilidades específicas
+3. Qué le falta para subir al siguiente nivel IB en cada criterio
+4. Recomendaciones concretas de mejora (tipo acción)
+5. Lenguaje claro para estudiante de bachillerato
+
+NO seas genérico. Sé específico como un evaluador IB.
+"""
+
+        feedback = preguntar_chatgpt(prompt)
+
+        st.markdown("### 📊 Retroalimentación IA")
+        st.write(feedback)
