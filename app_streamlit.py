@@ -24,7 +24,7 @@ with col1:
 with col2:
     st.image("Imagen2.png", width=200)
 
-tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador MUA", "🎯 Simulador Tiro parabólico", "🌌 Estrellas", "🧪 Generador"])
+tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador MUA", "🎯 Simulador Tiro parabólico", "🌌 Estrellas", "📡 Espectro EM","🧪 Generador"])
 
 st.markdown("""
 <hr>
@@ -286,12 +286,89 @@ with tabs[4]:
         st.write("🟡 Estrella tipo Sol")
     else:
         st.write("🔴 Estrella roja (más fría)")
+# =========================
+# 📡 Espectro Electromagnético
+# =========================
+with tabs[5]:
 
+    st.header("📡 Simulación: Espectro Electromagnético")
+
+    c = 3e8
+    h = 6.626e-34
+
+    # Slider logarítmico (clave IB)
+    log_lambda = st.slider("log10(Longitud de onda en metros)", -12.0, 3.0, -7.0)
+
+    lambda_val = 10**log_lambda
+    frecuencia = c / lambda_val
+    energia = h * frecuencia
+
+    lambda_nm = lambda_val * 1e9
+
+    # Clasificación del espectro
+    def region_em(lambda_m):
+        if lambda_m > 1:
+            return "Radio 📻"
+        elif lambda_m > 1e-3:
+            return "Microondas 📡"
+        elif lambda_m > 7e-7:
+            return "Infrarrojo 🔥"
+        elif lambda_m > 4e-7:
+            return "Visible 🌈"
+        elif lambda_m > 1e-8:
+            return "Ultravioleta ☀️"
+        elif lambda_m > 1e-11:
+            return "Rayos X 🩻"
+        else:
+            return "Rayos Gamma ☢️"
+
+    region = region_em(lambda_val)
+
+    st.write(f"📍 Región: **{region}**")
+    st.write(f"📏 Longitud de onda: {lambda_val:.2e} m")
+    st.write(f"🔁 Frecuencia: {frecuencia:.2e} Hz")
+    st.write(f"⚡ Energía: {energia:.2e} J")
+
+    # 📊 Visualización tipo barra
+    fig, ax = plt.subplots(figsize=(10, 2))
+
+    regiones = [
+        ("Radio", 1e3),
+        ("Microondas", 1e-2),
+        ("Infrarrojo", 1e-5),
+        ("Visible", 5e-7),
+        ("UV", 1e-8),
+        ("X", 1e-10),
+        ("Gamma", 1e-12)
+    ]
+
+    posiciones = list(range(len(regiones)))
+
+    ax.barh(posiciones, [1]*len(regiones), color="lightgray")
+
+    nombres = [r[0] for r in regiones]
+    ax.set_yticks(posiciones)
+    ax.set_yticklabels(nombres)
+
+    # Encontrar región actual
+    for i, (_, val) in enumerate(regiones):
+        if lambda_val >= val:
+            idx = i
+            break
+    else:
+        idx = len(regiones) - 1
+
+    ax.barh(idx, 1, color="red")
+
+    ax.set_title("Ubicación en el espectro EM")
+    ax.set_xticks([])
+
+    st.pyplot(fig)
 
 # =========================
 # 🧪 GENERADOR PREGUNTAS
 # =========================
-with tabs[5]:
+with tabs[6]:
 
     st.header("🧪 Generador de preguntas IB")
 
