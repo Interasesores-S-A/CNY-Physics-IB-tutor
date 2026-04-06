@@ -24,7 +24,7 @@ with col1:
 with col2:
     st.image("Imagen2.png", width=200)
 
-tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador MUA", "🎯 Simulador Tiro parabólico", "🌌 Estrellas", "📡 Espectro EM","🧪 Generador"])
+tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador MUA", "🎯 Simulador Tiro parabólico", "🌌 Estrellas", "📡 Espectro EM", "🌊 Onda", "🧪 Generador"])
 
 st.markdown("""
 <hr>
@@ -364,11 +364,66 @@ with tabs[5]:
     ax.set_xticks([])
 
     st.pyplot(fig)
+# =========================
+# 🌊 Onda Viajera
+# =========================
+
+with tabs[6]:
+    
+ st.header("🌊 Simulación: Onda Viajera")
+
+    # Parámetros
+    A = st.slider("Amplitud (A)", 0.1, 5.0, 1.0)
+    f = st.slider("Frecuencia (Hz)", 0.1, 5.0, 1.0)
+    lam = st.slider("Longitud de onda (λ)", 0.5, 10.0, 2.0)
+    phi = st.slider("Fase (φ)", 0.0, 2*np.pi, 0.0)
+
+    animar = st.button("▶ Animar onda")
+
+    # Parámetros derivados
+    omega = 2 * np.pi * f
+    k = 2 * np.pi / lam
+
+    x = np.linspace(0, 10, 500)
+
+    placeholder = st.empty()
+
+    if animar:
+
+        t_vals = np.linspace(0, 2, 100)
+
+        for t in t_vals:
+
+            y = A * np.sin(k * x - omega * t + phi)
+
+            fig, ax = plt.subplots()
+
+            ax.plot(x, y, color="blue")
+
+            ax.set_ylim(-A*1.2, A*1.2)
+            ax.set_xlim(0, 10)
+
+            ax.set_xlabel("Posición (x)")
+            ax.set_ylabel("Desplazamiento")
+            ax.set_title("Onda viajera")
+            ax.grid()
+
+            placeholder.pyplot(fig)
+            plt.close(fig)
+
+            time.sleep(0.03)
+
+    # Información física
+    v = f * lam
+
+    st.write(f"📏 Longitud de onda: {lam}")
+    st.write(f"🔁 Frecuencia: {f} Hz")
+    st.write(f"⚡ Velocidad de la onda: {v:.2f} m/s")
 
 # =========================
 # 🧪 GENERADOR PREGUNTAS
 # =========================
-with tabs[6]:
+with tabs[7]:
 
     st.header("🧪 Generador de preguntas IB")
 
