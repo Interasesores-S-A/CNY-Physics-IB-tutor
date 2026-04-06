@@ -369,8 +369,8 @@ with tabs[5]:
 # =========================
 
 with tabs[6]:
-    
- st.header("🌊 Simulación: Onda Viajera")
+
+    st.header("🌊 Simulación: Onda Viajera")
 
     # Parámetros
     A = st.slider("Amplitud (A)", 0.1, 5.0, 1.0)
@@ -380,7 +380,6 @@ with tabs[6]:
 
     animar = st.button("▶ Animar onda")
 
-    # Parámetros derivados
     omega = 2 * np.pi * f
     k = 2 * np.pi / lam
 
@@ -398,7 +397,7 @@ with tabs[6]:
 
             fig, ax = plt.subplots()
 
-            ax.plot(x, y, color="blue")
+            ax.plot(x, y)
 
             ax.set_ylim(-A*1.2, A*1.2)
             ax.set_xlim(0, 10)
@@ -413,11 +412,8 @@ with tabs[6]:
 
             time.sleep(0.03)
 
-    # Información física
     v = f * lam
 
-    st.write(f"📏 Longitud de onda: {lam}")
-    st.write(f"🔁 Frecuencia: {f} Hz")
     st.write(f"⚡ Velocidad de la onda: {v:.2f} m/s")
 
 # =========================
