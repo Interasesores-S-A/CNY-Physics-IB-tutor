@@ -346,77 +346,82 @@ with tabs[5]:
 
     st.header("📡 Simulación: Espectro Electromagnético")
 
-    c = 3e8
-    h = 6.626e-34
+    col1, col2 = st.columns([1, 2])  # 👈 layout
 
-    # Slider logarítmico (clave IB)
-    log_lambda = st.slider("log10(Longitud de onda en metros)", -12.0, 3.0, -7.0)
+    # =========================
+    # 🎛️ CONTROLES + RESULTADOS (IZQUIERDA)
+    # =========================
+    with col1:
 
-    lambda_val = 10**log_lambda
-    frecuencia = c / lambda_val
-    energia = h * frecuencia
+        c = 3e8
+        h = 6.626e-34
 
-    lambda_nm = lambda_val * 1e9
+        log_lambda = st.slider(
+            "log10(Longitud de onda en metros)", -12.0, 3.0, -7.0
+        )
 
-    # Clasificación del espectro
-    def region_em(lambda_m):
-        if lambda_m > 1:
-            return "Radio 📻"
-        elif lambda_m > 1e-3:
-            return "Microondas 📡"
-        elif lambda_m > 7e-7:
-            return "Infrarrojo 🔥"
-        elif lambda_m > 4e-7:
-            return "Visible 🌈"
-        elif lambda_m > 1e-8:
-            return "Ultravioleta ☀️"
-        elif lambda_m > 1e-11:
-            return "Rayos X 🩻"
-        else:
-            return "Rayos Gamma ☢️"
+        lambda_val = 10**log_lambda
+        frecuencia = c / lambda_val
+        energia = h * frecuencia
 
-    region = region_em(lambda_val)
+        # Clasificación
+        def region_em(lambda_m):
+            if lambda_m > 1:
+                return "Radio 📻"
+            elif lambda_m > 1e-3:
+                return "Microondas 📡"
+            elif lambda_m > 7e-7:
+                return "Infrarrojo 🔥"
+            elif lambda_m > 4e-7:
+                return "Visible 🌈"
+            elif lambda_m > 1e-8:
+                return "Ultravioleta ☀️"
+            elif lambda_m > 1e-11:
+                return "Rayos X 🩻"
+            else:
+                return "Rayos Gamma ☢️"
 
-    st.write(f"📍 Región: **{region}**")
-    st.write(f"📏 Longitud de onda: {lambda_val:.2e} m")
-    st.write(f"🔁 Frecuencia: {frecuencia:.2e} Hz")
-    st.write(f"⚡ Energía: {energia:.2e} J")
+        region = region_em(lambda_val)
 
-    # 📊 Visualización tipo barra
-    fig, ax = plt.subplots(figsize=(10, 2))
+        st.write(f"📍 Región: **{region}**")
+        st.write(f"📏 λ: {lambda_val:.2e} m")
+        st.write(f"🔁 f: {frecuencia:.2e} Hz")
+        st.write(f"⚡ E: {energia:.2e} J")
 
-    regiones = [
-        ("Radio", 1e3),
-        ("Microondas", 1e-2),
-        ("Infrarrojo", 1e-5),
-        ("Visible", 5e-7),
-        ("UV", 1e-8),
-        ("X", 1e-10),
-        ("Gamma", 1e-12)
-    ]
+    # =========================
+    # 📊 VISUALIZACIÓN (DERECHA)
+    # =========================
+    with col2:
 
-    posiciones = list(range(len(regiones)))
+    x = np.linspace(0, 10, 1000)
 
-    ax.barh(posiciones, [1]*len(regiones), color="lightgray")
+    # Escalado visual (para que no se vea aplastada)
+    escala = 1e6  
+    lambda_plot = lambda_val * escala
 
-    nombres = [r[0] for r in regiones]
-    ax.set_yticks(posiciones)
-    ax.set_yticklabels(nombres)
+    if lambda_plot == 0:
+        lambda_plot = 1e-6
 
-    # Encontrar región actual
-    for i, (_, val) in enumerate(regiones):
-        if lambda_val >= val:
-            idx = i
-            break
-    else:
-        idx = len(regiones) - 1
+    k = 2 * np.pi / lambda_plot
 
-    ax.barh(idx, 1, color="red")
+    y = np.sin(k * x)
 
-    ax.set_title("Ubicación en el espectro EM")
-    ax.set_xticks([])
+    fig, ax = plt.subplots(figsize=(6, 2.5))
 
-    st.pyplot(fig)
+    ax.plot(x, y)
+
+    ax.set_ylim(-1.2, 1.2)
+    ax.set_xlim(0, 10)
+
+    ax.set_title(f"Onda EM ({region})")
+    ax.set_xlabel("Espacio")
+    ax.set_ylabel("Amplitud")
+
+    ax.grid()
+
+    plt.tight_layout()
+
+    st.pyplot(fig, use_container_width=True)
 # =========================
 # 🌊 Onda Viajera
 # =========================
