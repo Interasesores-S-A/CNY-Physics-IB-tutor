@@ -436,49 +436,62 @@ with tabs[6]:
 
     st.header("🌊 Simulación: Onda Viajera")
 
-    # Parámetros
-    A = st.slider("Amplitud (A)", 0.1, 5.0, 1.0)
-    f = st.slider("Frecuencia (Hz)", 0.1, 5.0, 1.0)
-    lam = st.slider("Longitud de onda (λ)", 0.5, 10.0, 2.0)
-    phi = st.slider("Fase (φ)", 0.0, 2*np.pi, 0.0)
+    col1, col2 = st.columns([1, 2])  # 👈 layout
 
-    animar = st.button("▶ Animar onda")
+    # =========================
+    # 🎛️ CONTROLES (IZQUIERDA)
+    # =========================
+    with col1:
 
-    omega = 2 * np.pi * f
-    k = 2 * np.pi / lam
+        A = st.slider("Amplitud (A)", 0.1, 5.0, 1.0)
+        f = st.slider("Frecuencia (Hz)", 0.1, 5.0, 1.0)
+        lam = st.slider("Longitud de onda (λ)", 0.5, 10.0, 2.0)
+        phi = st.slider("Fase (φ)", 0.0, 2*np.pi, 0.0)
 
-    x = np.linspace(0, 10, 500)
+        animar = st.button("▶ Animar onda")
 
-    placeholder = st.empty()
+        v = f * lam
+        st.write(f"⚡ Velocidad de la onda: {v:.2f} m/s")
 
-    if animar:
+    # =========================
+    # 📊 GRÁFICA (DERECHA)
+    # =========================
+    with col2:
 
-        t_vals = np.linspace(0, 2, 100)
+        omega = 2 * np.pi * f
+        k = 2 * np.pi / lam
 
-        for t in t_vals:
+        x = np.linspace(0, 10, 500)
 
-            y = A * np.sin(k * x - omega * t + phi)
+        placeholder = st.empty()
 
-            fig, ax = plt.subplots()
+        if animar:
 
-            ax.plot(x, y)
+            t_vals = np.linspace(0, 2, 100)
 
-            ax.set_ylim(-A*1.2, A*1.2)
-            ax.set_xlim(0, 10)
+            for t in t_vals:
 
-            ax.set_xlabel("Posición (x)")
-            ax.set_ylabel("Desplazamiento")
-            ax.set_title("Onda viajera")
-            ax.grid()
+                y = A * np.sin(k * x - omega * t + phi)
 
-            placeholder.pyplot(fig)
-            plt.close(fig)
+                fig, ax = plt.subplots(figsize=(6, 2.5))  # 👈 compacto
 
-            time.sleep(0.03)
+                ax.plot(x, y)
 
-    v = f * lam
+                ax.set_ylim(-A*1.2, A*1.2)
+                ax.set_xlim(0, 10)
 
-    st.write(f"⚡ Velocidad de la onda: {v:.2f} m/s")
+                ax.set_xlabel("Posición (x)")
+                ax.set_ylabel("Desplazamiento")
+                ax.set_title("Onda viajera")
+                ax.grid()
+
+                plt.tight_layout()
+
+                placeholder.pyplot(fig, use_container_width=True)
+
+                plt.close(fig)
+
+                time.sleep(0.03)
 
 # =========================
 # 🧪 GENERADOR PREGUNTAS
