@@ -57,55 +57,67 @@ with tabs[1]:
 
     st.header("📊 Graficador IB")
 
-    pregunta = st.text_input("Contexto (ej: movimiento con aceleración)")
+    col1, col2 = st.columns([1, 2])  # 👈 izquierda pequeña, derecha grande
 
-    def obtener_ecuaciones(pregunta):
-        resultados = []
-        for tema, lista in ecuaciones_ib.items():
-            for eq in lista:
-                if eq["graficable"]:
-                    for var in eq["variables"]:
-                        if var.lower() in pregunta.lower():
-                            resultados.append(eq)
-        return resultados
+    with col1:
 
-    ecuaciones = obtener_ecuaciones(pregunta)
+        pregunta = st.text_input("Contexto (ej: movimiento con aceleración)")
 
-    if ecuaciones:
-        opciones = [eq["eq"] for eq in ecuaciones]
-        seleccion = st.selectbox("Ecuación", opciones)
+        def obtener_ecuaciones(pregunta):
+            resultados = []
+            for tema, lista in ecuaciones_ib.items():
+                for eq in lista:
+                    if eq["graficable"]:
+                        for var in eq["variables"]:
+                            if var.lower() in pregunta.lower():
+                                resultados.append(eq)
+            return resultados
 
-        eq = ecuaciones[opciones.index(seleccion)]
-        izquierda, derecha = eq["eq"].split("=")
+        ecuaciones = obtener_ecuaciones(pregunta)
 
-        var_x = st.selectbox("Variable eje x", eq["variables"])
+        if ecuaciones:
+            opciones = [eq["eq"] for eq in ecuaciones]
+            seleccion = st.selectbox("Ecuación", opciones)
 
-        params = {}
-        for var in eq["variables"]:
-            if var != var_x:
-                params[var] = st.slider(var, -10.0, 10.0, 1.0)
+            eq = ecuaciones[opciones.index(seleccion)]
+            izquierda, derecha = eq["eq"].split("=")
 
-        x_vals = np.linspace(0, 10, 100)
-        entorno = {var_x: x_vals}
-        entorno.update(params)
+            var_x = st.selectbox("Variable eje x", eq["variables"])
 
-        try:
-            y_vals = eval(derecha, {"np": np}, entorno)
+            params = {}
+            for var in eq["variables"]:
+                if var != var_x:
+                    params[var] = st.slider(var, -10.0, 10.0, 1.0)
 
-            if np.isscalar(y_vals):
-                y_vals = np.full_like(x_vals, y_vals)
+    # 👉 GRÁFICA A LA DERECHA
+    with col2:
 
-            fig, ax = plt.subplots()
-            ax.plot(x_vals, y_vals)
-            ax.set_xlabel(var_x)
-            ax.set_ylabel(izquierda)
-            ax.set_title(eq["eq"])
-            ax.grid()
+        if ecuaciones:
 
-            st.pyplot(fig)
+            x_vals = np.linspace(0, 10, 100)
+            entorno = {var_x: x_vals}
+            entorno.update(params)
 
-        except Exception as e:
-            st.error(f"Error: {e}")
+            try:
+                y_vals = eval(derecha, {"np": np}, entorno)
+
+                if np.isscalar(y_vals):
+                    y_vals = np.full_like(x_vals, y_vals)
+
+                fig, ax = plt.subplots(figsize=(6, 3))  # 👈 tamaño optimizado
+
+                ax.plot(x_vals, y_vals)
+                ax.set_xlabel(var_x)
+                ax.set_ylabel(izquierda)
+                ax.set_title(eq["eq"])
+                ax.grid()
+
+                plt.tight_layout()
+
+                st.pyplot(fig, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Error: {e}")
 
 
 # =========================
