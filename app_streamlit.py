@@ -3,9 +3,10 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-from streamlit_autorefresh import st_autorefresh
+
 import datetime
 from zoneinfo import ZoneInfo
+from streamlit_autorefresh import st_autorefresh
 
 from tutor_ib import tutor_ib_fisica
 from ecuaciones_ib import ecuaciones_ib
@@ -710,6 +711,11 @@ NO seas genérico. Sé específico como un evaluador IB.
 with tabs[9]:
 
     # =========================
+    # 🔄 REFRESH CONTROLADO
+    # =========================
+    st_autorefresh(interval=1000, key="reloj")
+
+    # =========================
     # 🎨 ESTILO
     # =========================
     st.markdown("""
@@ -727,15 +733,12 @@ with tabs[9]:
 
     st.header("⏱️ Gestión de Exámenes IB")
 
-    # =========================
-    # 🕒 HORA COLOMBIA
-    # =========================
     ahora = datetime.datetime.now(ZoneInfo("America/Bogota"))
 
     col1, col2 = st.columns([1, 1])
 
     # =========================
-    # 🧠 IZQUIERDA
+    # 🧠 IZQUIERDA (CONFIGURACIÓN)
     # =========================
     with col1:
 
@@ -777,7 +780,6 @@ with tabs[9]:
         with col_h2:
             minuto = st.selectbox("Minuto", list(range(0, 60)), format_func=lambda x: f"{x:02d}")
 
-        # Crear datetime
         inicio_dt = datetime.datetime.now(ZoneInfo("America/Bogota")).replace(
             hour=hora, minute=minuto, second=0, microsecond=0
         )
@@ -788,7 +790,7 @@ with tabs[9]:
         st.markdown(f"<p class='medium-text'>🕒 Fin: {fin_dt.time()}</p>", unsafe_allow_html=True)
 
         # =========================
-        # 🚻 BAÑO AUTOMÁTICO (IB REAL)
+        # 🚻 BAÑO AUTOMÁTICO
         # =========================
         if duracion > 75:
 
@@ -803,28 +805,66 @@ with tabs[9]:
             st.warning("🚫 No se permite salida al baño")
 
     # =========================
-    # ⏱️ DERECHA
+    # ⏱️ DERECHA (RELOJ + MODO FULL)
     # =========================
     with col2:
 
-        st.markdown("### 🕒 Hora oficial (Colombia)")
+        modo_full = st.toggle("🖥️ Modo pantalla completa")
 
-        st.markdown(
-            f"<p class='big-text'>{ahora.strftime('%H:%M:%S')}</p>",
-            unsafe_allow_html=True
-        )
+        if modo_full:
 
-        st.markdown("---")
-        st.markdown("### 📊 Estado del examen")
+            st.markdown("""
+            <style>
+            .fullscreen {
+                font-size: 90px;
+                text-align: center;
+                font-weight: bold;
+                margin-top: 100px;
+            }
+            .estado {
+                font-size: 40px;
+                text-align: center;
+                margin-top: 40px;
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
-        if ahora >= fin_dt:
-            st.error("⛔ FINALIZADO")
+            st.markdown(
+                f"<div class='fullscreen'>{ahora.strftime('%H:%M:%S')}</div>",
+                unsafe_allow_html=True
+            )
 
-        elif ahora >= (fin_dt - datetime.timedelta(minutes=15)):
-            st.warning("⚠️ Últimos 15 minutos")
+            if ahora >= fin_dt:
+                estado = "⛔ FINALIZADO"
+            elif ahora >= (fin_dt - datetime.timedelta(minutes=15)):
+                estado = "⚠️ ÚLTIMOS 15 MIN"
+            elif ahora >= inicio_dt:
+                estado = "🟢 EN CURSO"
+            else:
+                estado = "⏳ NO INICIA"
 
-        elif ahora >= inicio_dt:
-            st.success("🟢 En curso")
+            st.markdown(
+                f"<div class='estado'>{estado}</div>",
+                unsafe_allow_html=True
+            )
 
         else:
-            st.info("⏳ No inicia")
+
+            st.markdown("### 🕒 Hora oficial (Colombia)")
+
+            st.markdown(
+                f"<p class='big-text'>{ahora.strftime('%H:%M:%S')}</p>",
+                unsafe_allow_html=True
+            )
+
+            st.markdown("---")
+            st.markdown("### 📊 Estado del examen")
+
+            if ahora >= fin_dt:
+                st.error("⛔ FINALIZADO")
+            elif ahora >= (fin_dt - datetime.timedelta(minutes=15)):
+                st.warning("⚠️ Últimos 15 minutos")
+            elif ahora >= inicio_dt:
+                st.success("🟢 En curso")
+            else:
+                st.info("⏳ No inicia")
