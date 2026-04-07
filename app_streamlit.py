@@ -737,7 +737,7 @@ NO seas genérico. Sé específico como un evaluador IB.
 
 with tabs[9]:
 
-    st.markdown("<h1 style='font-size:40px;'>⏱️ Gestión de Exámenes IB</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size:42px;'>⏱️ Gestión de Exámenes IB</h1>", unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 1])
 
@@ -789,8 +789,23 @@ with tabs[9]:
         seleccion = st.selectbox("Selecciona el examen", nombres)
         examen = examenes[nombres.index(seleccion)]
 
+        materia = examen[0]
         tipo = examen[1]
         duracion = examen[2]
+
+        # 🔥 MATERIA GRANDE
+        st.markdown(
+            f"""
+            <div style='
+                font-size:40px;
+                font-weight:bold;
+                margin-bottom:10px;
+            '>
+                📘 {materia}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         st.markdown(f"<div style='font-size:26px;'>🧪 Tipo: <b>{tipo}</b></div>", unsafe_allow_html=True)
         st.markdown(f"<div style='font-size:26px;'>⏱️ Duración: <b>{duracion} min</b></div>", unsafe_allow_html=True)
