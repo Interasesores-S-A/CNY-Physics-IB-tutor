@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import time
 from streamlit_autorefresh import st_autorefresh
 import datetime
+from zoneinfo import ZoneInfo  # 👈 zona horaria
 
 from tutor_ib import tutor_ib_fisica
 from ecuaciones_ib import ecuaciones_ib
@@ -706,109 +707,132 @@ NO seas genérico. Sé específico como un evaluador IB.
 # ⏱️ Gestión de Exámenes IB"
 # =========================
 
-with tabs[9]:
+with tabs[8]:
+
+    # =========================
+    # ⏱️ AUTOREFRESH
+    # =========================
+    st_autorefresh(interval=1000, key="reloj")
+
+    # Hora Colombia
+    ahora = datetime.datetime.now(ZoneInfo("America/Bogota"))
+
+    # =========================
+    # 🎨 ESTILO (LETRA GRANDE)
+    # =========================
+    st.markdown("""
+        <style>
+        .big-text {
+            font-size: 28px !important;
+            font-weight: bold;
+        }
+        .medium-text {
+            font-size: 22px !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     st.header("⏱️ Gestión de Exámenes IB")
 
     # =========================
-    # 🕒 HORA EN VIVO
+    # 📐 COLUMNAS
     # =========================
-    st_autorefresh(interval=1000, key="reloj")
-
-    ahora = datetime.datetime.now()
-
-    st.markdown("### 🕒 Hora actual")
-    st.success(ahora.strftime("%H:%M:%S"))
+    col1, col2 = st.columns([1, 1])
 
     # =========================
-    # 📚 BASE DE DATOS
+    # 🧠 IZQUIERDA (CONFIGURACIÓN)
     # =========================
-    examenes = [
-        ("Biology NM P1", "Estructurado", 90),
-        ("Biology NM P2", "Estructurado", 90),
-        ("Gestión NM NS P1", "No estructurado", 90),
-        ("Gestión NS P3", "No estructurado", 75),
-        ("Gestión Empresarial NM P2", "Estructurado", 90),
-        ("Gestión Empresarial NS P2", "No estructurado", 105),
-        ("Lengua y Lit. NS P1", "No estructurado", 135),
-        ("Lengua y Lit. NS P2", "No estructurado", 105),
-        ("Chemistry NM P1", "Estructurado", 90),
-        ("Chemistry NM P2", "Estructurado", 90),
-        ("Historia NM P2", "No estructurado", 90),
-        ("Historia NS P3", "No estructurado", 150),
-        ("Física NM P1", "Estructurado", 90),
-        ("Física NM P2", "Estructurado", 90),
-        ("Inglés B NS P1", "Estructurado", 90),
-        ("Inglés B NS Lectura", "Estructurado", 60),
-        ("Inglés B NS Auditiva", "Estructurado", 60),
-        ("Análisis NM P1", "Semiestructurado", 90),
-        ("Aplicaciones NM P1", "Estructurado", 90),
-        ("Política Global NS P2", "No estructurado", 165),
-        ("ESS NM P1", "Estructurado", 60),
-        ("ESS NM P2", "Estructurado", 120),
-        ("Filosofía NS P3", "No estructurado", 75),
-    ]
+    with col1:
 
-    nombres = [e[0] for e in examenes]
+        st.markdown("### 🧪 Configuración")
 
-    # =========================
-    # 🎛️ SELECCIÓN
-    # =========================
-    seleccion = st.selectbox("Selecciona el examen", nombres)
+        examenes = [
+            ("Biology NM P1", "Estructurado", 90),
+            ("Biology NM P2", "Estructurado", 90),
+            ("Gestión NM NS P1", "No estructurado", 90),
+            ("Gestión NS P3", "No estructurado", 75),
+            ("Gestión Empresarial NM P2", "Estructurado", 90),
+            ("Gestión Empresarial NS P2", "No estructurado", 105),
+            ("Lengua y Lit. NS P1", "No estructurado", 135),
+            ("Lengua y Lit. NS P2", "No estructurado", 105),
+            ("Chemistry NM P1", "Estructurado", 90),
+            ("Chemistry NM P2", "Estructurado", 90),
+            ("Historia NM P2", "No estructurado", 90),
+            ("Historia NS P3", "No estructurado", 150),
+            ("Física NM P1", "Estructurado", 90),
+            ("Física NM P2", "Estructurado", 90),
+            ("Inglés B NS P1", "Estructurado", 90),
+            ("Inglés B NS Lectura", "Estructurado", 60),
+            ("Inglés B NS Auditiva", "Estructurado", 60),
+            ("Análisis NM P1", "Semiestructurado", 90),
+            ("Aplicaciones NM P1", "Estructurado", 90),
+            ("Política Global NS P2", "No estructurado", 165),
+            ("ESS NM P1", "Estructurado", 60),
+            ("ESS NM P2", "Estructurado", 120),
+            ("Filosofía NS P3", "No estructurado", 75),
+        ]
 
-    examen = examenes[nombres.index(seleccion)]
+        nombres = [e[0] for e in examenes]
 
-    tipo = examen[1]
-    duracion = examen[2]
+        seleccion = st.selectbox("Selecciona el examen", nombres)
+        examen = examenes[nombres.index(seleccion)]
 
-    st.write(f"🧪 Tipo de prueba: **{tipo}**")
-    st.write(f"⏱️ Duración: **{duracion} minutos**")
+        tipo = examen[1]
+        duracion = examen[2]
 
-    # =========================
-    # ⏰ HORA DE INICIO
-    # =========================
-    hora_inicio = st.time_input("Hora de inicio")
+        st.markdown(f"<p class='medium-text'>🧪 Tipo: {tipo}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='medium-text'>⏱️ Duración: {duracion} min</p>", unsafe_allow_html=True)
 
-    inicio_dt = datetime.datetime.combine(datetime.date.today(), hora_inicio)
-    fin_dt = inicio_dt + datetime.timedelta(minutes=duracion)
+        hora_inicio = st.time_input("Hora de inicio")
 
-    st.success(f"🕒 Hora de finalización: {fin_dt.time()}")
+        inicio_dt = datetime.datetime.combine(datetime.date.today(), hora_inicio)
+        inicio_dt = inicio_dt.replace(tzinfo=ZoneInfo("America/Bogota"))
 
-    # =========================
-    # 🚻 SALIDA AL BAÑO
-    # =========================
-    if duracion > 60:
+        fin_dt = inicio_dt + datetime.timedelta(minutes=duracion)
 
-        st.markdown("### 🚻 Control de salida al baño")
+        st.markdown(f"<p class='medium-text'>🕒 Fin: {fin_dt.time()}</p>", unsafe_allow_html=True)
 
-        salida_permitida = st.checkbox("Permitir salida al baño")
+        # 🚻 BAÑO
+        if duracion > 60:
 
-        if salida_permitida:
+            st.markdown("### 🚻 Baño")
 
-            salida_inicio = inicio_dt + datetime.timedelta(minutes=60)
-            salida_fin = fin_dt - datetime.timedelta(minutes=15)
+            salida_permitida = st.checkbox("Permitir salida")
 
-            st.success(f"🕒 Ventana de salida: {salida_inicio.time()} → {salida_fin.time()}")
-            st.info(f"🚶‍♂️ Puede salir desde: {salida_inicio.time()}")
-            st.warning(f"⛔ Última hora para salir: {salida_fin.time()}")
+            if salida_permitida:
 
-            if salida_inicio >= salida_fin:
-                st.error("⚠️ No hay ventana válida de salida al baño")
+                salida_inicio = inicio_dt + datetime.timedelta(minutes=60)
+                salida_fin = fin_dt - datetime.timedelta(minutes=15)
 
-    else:
-        st.warning("🚫 No hay salida al baño (examen menor a 1 hora)")
+                st.success(f"Salida: {salida_inicio.time()} → {salida_fin.time()}")
+
+        else:
+            st.warning("Sin salida al baño")
 
     # =========================
-    # ⏳ CONTROL EN VIVO
+    # ⏱️ DERECHA (RELOJ + ESTADO)
     # =========================
-    if ahora >= fin_dt:
-        st.error("⛔ TIEMPO FINALIZADO")
+    with col2:
 
-    elif ahora >= (fin_dt - datetime.timedelta(minutes=15)):
-        st.warning("⚠️ Últimos 15 minutos")
+        st.markdown("### 🕒 Hora oficial (Colombia)")
 
-    elif ahora >= inicio_dt:
-        st.success("🟢 Examen en curso")
+        st.markdown(
+            f"<p class='big-text'>{ahora.strftime('%H:%M:%S')}</p>",
+            unsafe_allow_html=True
+        )
 
-    else:
-        st.info("⏳ Examen aún no inicia")
+        st.markdown("---")
+
+        st.markdown("### 📊 Estado del examen")
+
+        if ahora >= fin_dt:
+            st.error("⛔ FINALIZADO")
+
+        elif ahora >= (fin_dt - datetime.timedelta(minutes=15)):
+            st.warning("⚠️ Últimos 15 minutos")
+
+        elif ahora >= inicio_dt:
+            st.success("🟢 En curso")
+
+        else:
+            st.info("⏳ No inicia")
