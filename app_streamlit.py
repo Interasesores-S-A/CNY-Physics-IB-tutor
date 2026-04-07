@@ -750,7 +750,7 @@ with tabs[9]:
         st.markdown("""
             <style>
             .big-left {
-                font-size: 22px;
+                font-size: 30px;
                 font-weight: 500;
             }
             </style>
