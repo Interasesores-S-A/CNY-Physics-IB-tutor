@@ -742,22 +742,56 @@ with tabs[9]:
     col1, col2 = st.columns([1, 1])
 
     # =========================
-    # IZQUIERDA
+    # 🧠 COLUMNA IZQUIERDA
     # =========================
     with col1:
-st.markdown("""
-    <style>
-    .col1-text {
-        font-size: 22px !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+
+        # 🔥 ESTILO LETRA GRANDE
+        st.markdown("""
+            <style>
+            .big-left {
+                font-size: 22px;
+                font-weight: 500;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        st.subheader("🧪 Configuración")
+
         examenes = [
             ("Biology NM P1", "Estructurado", 90),
+            ("Biology NM P2", "Estructurado", 90),
+            ("Gestión NM NS P1", "No estructurado", 90),
+            ("Gestión NS P3", "No estructurado", 75),
+            ("Gestión Empresarial NM P2", "Estructurado", 90),
+            ("Gestión Empresarial NS P2", "No estructurado", 105),
+            ("Lengua y Lit. NS P1", "No estructurado", 135),
+            ("Lengua y Lit. NS P2", "No estructurado", 105),
+            ("Chemistry NM P1", "Estructurado", 90),
+            ("Chemistry NM P2", "Estructurado", 90),
+            ("Historia NM P2", "No estructurado", 90),
+            ("Historia NS P2", "No estructurado", 90),
+            ("Historia NM P1", "No estructurado", 60),
+            ("Historia NS P1", "No estructurado", 60),
+            ("Historia NS P3", "No estructurado", 150),
             ("Física NM P1", "Estructurado", 90),
             ("Física NM P2", "Estructurado", 90),
+            ("Inglés B NS P1", "Estructurado", 90),
+            ("Inglés B NS Lectura", "Estructurado", 60),
+            ("Inglés B NS Auditiva", "Estructurado", 60),
+            ("Análisis NM P1", "Semiestructurado", 90),
+            ("Análisis NM P2", "Semiestructurado", 90),
+            ("Aplicaciones NM P1", "Estructurado", 90),
+            ("Aplicaciones NM P2", "No estructurado", 90),
+            ("Política Global NS P1", "No estructurado", 75),
+            ("Política Global NS P2", "No estructurado", 165),
             ("ESS NM P1", "Estructurado", 60),
             ("ESS NM P2", "Estructurado", 120),
+            ("Filosofía NM P1", "No estructurado", 105),
+            ("Filosofía NS P1", "No estructurado", 150),
+            ("Filosofía NM P2", "No estructurado", 60),
+            ("Filosofía NS P2", "No estructurado", 60),
+            ("Filosofía NS P3", "No estructurado", 75),
         ]
 
         nombres = [e[0] for e in examenes]
@@ -768,35 +802,43 @@ st.markdown("""
         tipo = examen[1]
         duracion = examen[2]
 
-        st.write(f"🧪 Tipo: {tipo}")
-        st.write(f"⏱️ Duración: {duracion} min")
+        st.markdown(f"<p class='big-left'>🧪 Tipo: {tipo}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='big-left'>⏱️ Duración: {duracion} min</p>", unsafe_allow_html=True)
 
-        # Hora
+        # ⏰ HORA
+        st.markdown("### ⏰ Hora de inicio")
+
         col_h1, col_h2 = st.columns(2)
 
         with col_h1:
-            hora = st.selectbox("Hora", list(range(0, 24)))
+            hora = st.selectbox("Hora", list(range(0, 24)), format_func=lambda x: f"{x:02d}")
 
         with col_h2:
-            minuto = st.selectbox("Minuto", list(range(0, 60)))
+            minuto = st.selectbox("Minuto", list(range(0, 60)), format_func=lambda x: f"{x:02d}")
 
         ahora = datetime.datetime.now(ZoneInfo("America/Bogota"))
 
         inicio_dt = ahora.replace(hour=hora, minute=minuto, second=0, microsecond=0)
         fin_dt = inicio_dt + datetime.timedelta(minutes=duracion)
 
-        st.write(f"🕒 Inicio: {inicio_dt.time()}")
-        st.write(f"🕒 Fin: {fin_dt.time()}")
+        st.markdown(f"<p class='big-left'>🕒 Inicio: {inicio_dt.time()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='big-left'>🕒 Fin: {fin_dt.time()}</p>", unsafe_allow_html=True)
 
-        # Baño
+        # 🚻 BAÑO
         if duracion > 75:
             salida_inicio = inicio_dt + datetime.timedelta(minutes=60)
             salida_fin = fin_dt - datetime.timedelta(minutes=15)
 
-            st.success(f"🚻 {salida_inicio.time()} → {salida_fin.time()}")
+            st.markdown("### 🚻 Salida al baño")
+            st.markdown(
+                f"<p class='big-left'>{salida_inicio.time()} → {salida_fin.time()}</p>",
+                unsafe_allow_html=True
+            )
+        else:
+            st.warning("🚫 No se permite salida al baño")
 
     # =========================
-    # DERECHA (RELOJ)
+    # ⏱️ COLUMNA DERECHA (RELOJ)
     # =========================
     with col2:
 
