@@ -795,7 +795,7 @@ with tabs[9]:
             salida_inicio = inicio_dt + datetime.timedelta(minutes=60)
             salida_fin = fin_dt - datetime.timedelta(minutes=15)
 
-            st.markdown("### 🚻 Salida al baño (automática)")
+            st.markdown("### 🚻 Salida al baño")
 
             st.success(f"Ventana: {salida_inicio.time()} → {salida_fin.time()}")
 
