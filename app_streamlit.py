@@ -708,10 +708,11 @@ NO seas genérico. Sé específico como un evaluador IB.
 # ⏱️ Gestión de Exámenes IB"
 # =========================
 
-with tabs[9]:
+
+with tabs[8]:
 
     # =========================
-    # 🔄 REFRESH CONTROLADO
+    # 🔄 REFRESH
     # =========================
     st_autorefresh(interval=1000, key="reloj")
 
@@ -738,7 +739,7 @@ with tabs[9]:
     col1, col2 = st.columns([1, 1])
 
     # =========================
-    # 🧠 IZQUIERDA (CONFIGURACIÓN)
+    # 🧠 IZQUIERDA
     # =========================
     with col1:
 
@@ -747,13 +748,37 @@ with tabs[9]:
         examenes = [
             ("Biology NM P1", "Estructurado", 90),
             ("Biology NM P2", "Estructurado", 90),
+            ("Gestión NM NS P1", "No estructurado", 90),
             ("Gestión NS P3", "No estructurado", 75),
+            ("Gestión Empresarial NM P2", "Estructurado", 90),
+            ("Gestión Empresarial NS P2", "No estructurado", 105),
             ("Lengua y Lit. NS P1", "No estructurado", 135),
+            ("Lengua y Lit. NS P2", "No estructurado", 105),
             ("Chemistry NM P1", "Estructurado", 90),
+            ("Chemistry NM P2", "Estructurado", 90),
+            ("Historia NM P2", "No estructurado", 90),
+            ("Historia NS P2", "No estructurado", 90),
+            ("Historia NM P1", "No estructurado", 60),
+            ("Historia NS P1", "No estructurado", 60),
+            ("Historia NS P3", "No estructurado", 150),
             ("Física NM P1", "Estructurado", 90),
             ("Física NM P2", "Estructurado", 90),
+            ("Inglés B NS P1", "Estructurado", 90),
+            ("Inglés B NS Lectura", "Estructurado", 60),
+            ("Inglés B NS Auditiva", "Estructurado", 60),
+            ("Análisis NM P1", "Semiestructurado", 90),
+            ("Análisis NM P2", "Semiestructurado", 90),
+            ("Aplicaciones NM P1", "Estructurado", 90),
+            ("Aplicaciones NM P2", "No estructurado", 90),
+            ("Política Global NS P1", "No estructurado", 75),
+            ("Política Global NS P2", "No estructurado", 165),
             ("ESS NM P1", "Estructurado", 60),
             ("ESS NM P2", "Estructurado", 120),
+            ("Filosofía NM P1", "No estructurado", 105),
+            ("Filosofía NS P1", "No estructurado", 150),
+            ("Filosofía NM P2", "No estructurado", 60),
+            ("Filosofía NS P2", "No estructurado", 60),
+            ("Filosofía NS P3", "No estructurado", 75),
         ]
 
         nombres = [e[0] for e in examenes]
@@ -768,7 +793,7 @@ with tabs[9]:
         st.markdown(f"<p class='medium-text'>⏱️ Duración: {duracion} min</p>", unsafe_allow_html=True)
 
         # =========================
-        # ⏰ HORA PERSONALIZADA
+        # ⏰ HORA
         # =========================
         st.markdown("### ⏰ Hora de inicio")
 
@@ -790,7 +815,7 @@ with tabs[9]:
         st.markdown(f"<p class='medium-text'>🕒 Fin: {fin_dt.time()}</p>", unsafe_allow_html=True)
 
         # =========================
-        # 🚻 BAÑO AUTOMÁTICO
+        # 🚻 BAÑO
         # =========================
         if duracion > 75:
 
@@ -798,14 +823,13 @@ with tabs[9]:
             salida_fin = fin_dt - datetime.timedelta(minutes=15)
 
             st.markdown("### 🚻 Salida al baño")
-
             st.success(f"Ventana: {salida_inicio.time()} → {salida_fin.time()}")
 
         else:
             st.warning("🚫 No se permite salida al baño")
 
     # =========================
-    # ⏱️ DERECHA (RELOJ + MODO FULL)
+    # ⏱️ DERECHA
     # =========================
     with col2:
 
