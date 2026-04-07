@@ -737,7 +737,7 @@ NO seas genérico. Sé específico como un evaluador IB.
 
 with tabs[9]:
 
-    st.header("⏱️ Gestión de Exámenes IB")
+    st.markdown("<h1 style='font-size:40px;'>⏱️ Gestión de Exámenes IB</h1>", unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 1])
 
@@ -746,17 +746,7 @@ with tabs[9]:
     # =========================
     with col1:
 
-        # 🔥 ESTILO LETRA GRANDE
-        st.markdown("""
-            <style>
-            .big-left {
-                font-size: 30px;
-                font-weight: 500;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
-        st.subheader("🧪 Configuración")
+        st.markdown("<h2 style='font-size:32px;'>🧪 Configuración</h2>", unsafe_allow_html=True)
 
         examenes = [
             ("Biology NM P1", "Estructurado", 90),
@@ -802,11 +792,13 @@ with tabs[9]:
         tipo = examen[1]
         duracion = examen[2]
 
-        st.markdown(f"<p class='big-left'>🧪 Tipo: {tipo}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='big-left'>⏱️ Duración: {duracion} min</p>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size:26px;'>🧪 Tipo: <b>{tipo}</b></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size:26px;'>⏱️ Duración: <b>{duracion} min</b></div>", unsafe_allow_html=True)
 
+        # =========================
         # ⏰ HORA
-        st.markdown("### ⏰ Hora de inicio")
+        # =========================
+        st.markdown("<h3 style='font-size:28px;'>⏰ Hora de inicio</h3>", unsafe_allow_html=True)
 
         col_h1, col_h2 = st.columns(2)
 
@@ -821,34 +813,51 @@ with tabs[9]:
         inicio_dt = ahora.replace(hour=hora, minute=minuto, second=0, microsecond=0)
         fin_dt = inicio_dt + datetime.timedelta(minutes=duracion)
 
-        st.markdown(f"<p class='big-left'>🕒 Inicio: {inicio_dt.time()}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='big-left'>🕒 Fin: {fin_dt.time()}</p>", unsafe_allow_html=True)
+        # 🔥 HORAS GRANDES
+        st.markdown(
+            f"""
+            <div style='font-size:34px; font-weight:bold; line-height:1.6;'>
+                🕒 Inicio: {inicio_dt.time()}<br>
+                🕒 Fin: {fin_dt.time()}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
+        # =========================
         # 🚻 BAÑO
+        # =========================
         if duracion > 75:
+
             salida_inicio = inicio_dt + datetime.timedelta(minutes=60)
             salida_fin = fin_dt - datetime.timedelta(minutes=15)
 
-            st.markdown("### 🚻 Salida al baño")
+            st.markdown("<h3 style='font-size:28px;'>🚻 Salida al baño</h3>", unsafe_allow_html=True)
+
             st.markdown(
-                f"<p class='big-left'>{salida_inicio.time()} → {salida_fin.time()}</p>",
+                f"""
+                <div style='font-size:28px; font-weight:bold;'>
+                    {salida_inicio.time()} → {salida_fin.time()}
+                </div>
+                """,
                 unsafe_allow_html=True
             )
         else:
-            st.warning("🚫 No se permite salida al baño")
+            st.markdown("<div style='font-size:24px;'>🚫 No se permite salida</div>", unsafe_allow_html=True)
 
     # =========================
     # ⏱️ COLUMNA DERECHA (RELOJ)
     # =========================
     with col2:
 
-        st.markdown("### 🕒 Hora oficial (Colombia)")
+        st.markdown("<h2 style='font-size:32px; text-align:center;'>🕒 Hora oficial</h2>", unsafe_allow_html=True)
 
         components.html("""
             <div id="clock" style="
-                font-size:60px;
+                font-size:80px;
                 font-weight:bold;
                 text-align:center;
+                margin-top:40px;
             "></div>
 
             <script>
@@ -870,4 +879,4 @@ with tabs[9]:
             setInterval(updateClock, 1000);
             updateClock();
             </script>
-        """, height=120)
+        """, height=180)
