@@ -3,6 +3,8 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+from streamlit_autorefresh import st_autorefresh
+import datetime
 
 from tutor_ib import tutor_ib_fisica
 from ecuaciones_ib import ecuaciones_ib
@@ -709,6 +711,16 @@ with tabs[9]:
     st.header("⏱️ Gestión de Exámenes IB")
 
     # =========================
+    # 🕒 HORA EN VIVO
+    # =========================
+    st_autorefresh(interval=1000, key="reloj")
+
+    ahora = datetime.datetime.now()
+
+    st.markdown("### 🕒 Hora actual")
+    st.success(ahora.strftime("%H:%M:%S"))
+
+    # =========================
     # 📚 BASE DE DATOS
     # =========================
     examenes = [
@@ -757,9 +769,6 @@ with tabs[9]:
     # =========================
     hora_inicio = st.time_input("Hora de inicio")
 
-    # Calcular hora fin
-    import datetime
-
     inicio_dt = datetime.datetime.combine(datetime.date.today(), hora_inicio)
     fin_dt = inicio_dt + datetime.timedelta(minutes=duracion)
 
@@ -776,10 +785,30 @@ with tabs[9]:
 
         if salida_permitida:
 
-            # IB típico: después de 1 hora
-            tiempo_salida = inicio_dt + datetime.timedelta(minutes=60)
+            salida_inicio = inicio_dt + datetime.timedelta(minutes=60)
+            salida_fin = fin_dt - datetime.timedelta(minutes=15)
 
-            st.info(f"🚶‍♂️ Puede salir a partir de: {tiempo_salida.time()}")
+            st.success(f"🕒 Ventana de salida: {salida_inicio.time()} → {salida_fin.time()}")
+            st.info(f"🚶‍♂️ Puede salir desde: {salida_inicio.time()}")
+            st.warning(f"⛔ Última hora para salir: {salida_fin.time()}")
+
+            if salida_inicio >= salida_fin:
+                st.error("⚠️ No hay ventana válida de salida al baño")
 
     else:
         st.warning("🚫 No hay salida al baño (examen menor a 1 hora)")
+
+    # =========================
+    # ⏳ CONTROL EN VIVO
+    # =========================
+    if ahora >= fin_dt:
+        st.error("⛔ TIEMPO FINALIZADO")
+
+    elif ahora >= (fin_dt - datetime.timedelta(minutes=15)):
+        st.warning("⚠️ Últimos 15 minutos")
+
+    elif ahora >= inicio_dt:
+        st.success("🟢 Examen en curso")
+
+    else:
+        st.info("⏳ Examen aún no inicia")
