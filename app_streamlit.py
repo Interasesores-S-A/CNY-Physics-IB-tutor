@@ -745,7 +745,13 @@ with tabs[9]:
     # IZQUIERDA
     # =========================
     with col1:
-
+st.markdown("""
+    <style>
+    .col1-text {
+        font-size: 22px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
         examenes = [
             ("Biology NM P1", "Estructurado", 90),
             ("Física NM P1", "Estructurado", 90),
