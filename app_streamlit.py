@@ -26,7 +26,7 @@ with col1:
     st.markdown(
         """
         <div style="display:flex; align-items:center; justify-content:center; height:100%;">
-            <img src="logo-colegio-nueva-york.png" width="300">
+            <img src="logo-colegio-nueva-york.png" width="200">
         </div>
         """,
         unsafe_allow_html=True
