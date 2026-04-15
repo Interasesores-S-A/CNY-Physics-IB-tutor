@@ -18,15 +18,17 @@ plt.rcParams["figure.figsize"] = (6, 3)
 # =========================
 st.set_page_config(page_title="Tutor IB Física", layout="wide")
 
-st.title("IB PhyscApp")
+#st.title("IB PhyscApp")
 
 col1, col2 = st.columns([1, 3])
 
 with col1:
-   st.image("logo-colegio-nueva-york.png", width=300)
-
+   #st.image("logo-colegio-nueva-york.png", width=300)
+   st.image("logoapp4.png", width=300)
 with col2:
-    st.image("logoapp4.png", width=300)
+    #st.image("logoapp4.png", width=300)
+    st.image("logo-colegio-nueva-york.png", width=300)
+
 
 tabs = st.tabs(["🧠 Tutor", "📊 Graficador", "🎛️ Simulador MUA", "🎯 Simulador Tiro parabólico", "🌌 Estrellas", "📡 Espectro EM", "🌊 Onda", "🧪 Generador", "📋 Investigación Interna", "⏱️ Exámenes IB"])
 
