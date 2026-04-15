@@ -95,7 +95,7 @@ Responde SIEMPRE con esta estructura:
 1. Clasificación de la pregunta
 2. Command term IB
 3. Significado del command term
-4. Tema IB (usar solo A–E)
+4. Tema IB (A–E)
 5. Ecuación relevante
 6. Estrategia general
 
@@ -118,12 +118,7 @@ Pregunta:
 """
 
         try:
-            respuesta = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}]
-            )
-
-            resultado = respuesta.choices[0].message.content
+            resultado = preguntar_chatgpt(prompt)
 
             st.markdown("### 📘 Tutor IB")
             st.markdown(resultado)
@@ -132,14 +127,12 @@ Pregunta:
             st.error(f"Error: {e}")
 
         # =========================
-        # 🧪 CORRECCIÓN DEL ESTUDIANTE
+        # 🧪 EVALUACIÓN IB
         # =========================
         if respuesta_estudiante:
 
             prompt_eval = f"""
-Actúa como EXAMINADOR del Bachillerato Internacional (IB).
-
-Evalúa la respuesta del estudiante.
+Actúa como EXAMINADOR del IB.
 
 Pregunta:
 {pregunta}
@@ -147,33 +140,28 @@ Pregunta:
 Respuesta del estudiante:
 {respuesta_estudiante}
 
-Responde con esta estructura:
+Evalúa usando:
 
 🔎 Evaluación:
-- ¿Es correcta, parcialmente correcta o incorrecta?
+- Correcta / Parcial / Incorrecta
 
-📊 Comentarios IB:
-- Precisión conceptual
-- Uso de ecuaciones
+📊 Comentarios:
+- Conceptos
+- Ecuaciones
 - Claridad
 
-❌ Errores específicos:
-- Señala exactamente qué está mal
+❌ Errores:
+- Específicos
 
-💡 Mejora sugerida:
-- Cómo mejorar la respuesta
+💡 Mejora:
+- Cómo mejorar
 
-⭐ Nivel estimado IB:
+⭐ Nivel IB:
 - Bajo / Medio / Alto
 """
 
             try:
-                evaluacion = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[{"role": "user", "content": prompt_eval}]
-                )
-
-                feedback = evaluacion.choices[0].message.content
+                feedback = preguntar_chatgpt(prompt_eval)
 
                 st.markdown("### 🧪 Evaluación tipo IB")
                 st.markdown(feedback)
